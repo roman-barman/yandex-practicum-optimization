@@ -2,9 +2,29 @@ use broken_app::{algo, leak_buffer, normalize, sum_even};
 
 #[test]
 fn sums_even_numbers() {
+    let nums: [i64; 0] = [];
+    // Ожидаем корректное суммирование: 0.
+    assert_eq!(sum_even(&nums), Some(0));
+
     let nums = [1, 2, 3, 4];
     // Ожидаем корректное суммирование: 2 + 4 = 6.
-    assert_eq!(sum_even(&nums), 6);
+    assert_eq!(sum_even(&nums), Some(6));
+
+    let nums = [1, 3];
+    // Ожидаем корректное суммирование: 0.
+    assert_eq!(sum_even(&nums), Some(0));
+
+    let nums = [2];
+    // Ожидаем корректное суммирование: 2 = 2.
+    assert_eq!(sum_even(&nums), Some(2));
+
+    let nums = [2, 4];
+    // Ожидаем корректное суммирование: 2 + 4 = 6.
+    assert_eq!(sum_even(&nums), Some(6));
+
+    let nums = [i64::MAX - 1, 2];
+    // Ожидаем переполнение: None.
+    assert_eq!(sum_even(&nums), None);
 }
 
 #[test]

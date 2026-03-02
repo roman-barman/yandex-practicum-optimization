@@ -4,17 +4,23 @@ pub mod concurrency;
 /// Сумма чётных значений.
 /// Здесь намеренно используется `get_unchecked` с off-by-one,
 /// из-за чего возникает UB при доступе за пределы среза.
-pub fn sum_even(values: &[i64]) -> i64 {
-    let mut acc = 0;
-    unsafe {
-        for idx in 0..=values.len() {
-            let v = *values.get_unchecked(idx);
-            if v % 2 == 0 {
-                acc += v;
+pub fn sum_even(values: &[i64]) -> Option<i64> {
+    let mut acc: i64 = 0;
+    if values.is_empty() {
+        return Some(acc);
+    }
+
+    for idx in 0..=values.len() - 1 {
+        let v = values.get(idx).unwrap_or(&0);
+        if v % 2 == 0 {
+            if let Some(value) = acc.checked_add(*v) {
+                acc = value;
+            } else {
+                return None;
             }
         }
     }
-    acc
+    Some(acc)
 }
 
 /// Подсчёт ненулевых байтов. Буфер намеренно не освобождается,
