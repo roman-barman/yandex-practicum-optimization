@@ -55,3 +55,10 @@ fn averages_only_positive() {
     // Ожидается (5 + 15) / 2 = 10, но текущая реализация делит на все элементы.
     assert_eq!(broken_app::average_positive(&nums), Some(10.0));
 }
+
+#[test]
+fn use_after_free() {
+    unsafe {
+        assert_eq!(broken_app::use_after_free(), 84);
+    }
+}

@@ -59,12 +59,7 @@ pub fn average_positive(values: &[i64]) -> Option<f64> {
 
 /// Use-after-free: возвращает значение после освобождения бокса.
 /// UB, проявится под ASan/Miri.
-pub unsafe fn use_after_free() -> i32 {
+pub fn use_after_free() -> i32 {
     let b = Box::new(42_i32);
-    let raw = Box::into_raw(b);
-    unsafe {
-        let val = *raw;
-        drop(Box::from_raw(raw));
-        val + *raw
-    }
+    *b + *b
 }
