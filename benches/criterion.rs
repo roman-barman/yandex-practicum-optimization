@@ -1,6 +1,6 @@
-use std::hint::black_box;
 use broken_app::{algo, sum_even};
 use criterion::{BatchSize, Criterion, criterion_group, criterion_main};
+use std::hint::black_box;
 
 fn bench_sum_even(c: &mut Criterion) {
     let data: Vec<i64> = (0..50_000).collect();
