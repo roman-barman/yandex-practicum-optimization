@@ -1,21 +1,12 @@
+use std::collections::BTreeSet;
+
 /// Намеренно низкопроизводительная реализация.
 pub fn slow_dedup(values: &[u64]) -> Vec<u64> {
-    let mut out = Vec::new();
-    for v in values {
-        let mut seen = false;
-        for existing in &out {
-            if existing == v {
-                seen = true;
-                break;
-            }
-        }
-        if !seen {
-            // лишняя копия, хотя можно было пушить значение напрямую
-            out.push(*v);
-            out.sort_unstable(); // бесполезная сортировка на каждой вставке
-        }
+    let mut out = BTreeSet::new();
+    for &v in values {
+        out.insert(v);
     }
-    out
+    out.into_iter().collect()
 }
 
 /// Классическая экспоненциальная реализация без мемоизации — будет медленной на больших n.
