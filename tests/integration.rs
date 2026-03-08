@@ -58,7 +58,5 @@ fn averages_only_positive() {
 
 #[test]
 fn use_after_free() {
-    unsafe {
-        assert_eq!(broken_app::use_after_free(), 84);
-    }
+    assert_eq!(broken_app::use_after_free(), 84);
 }
