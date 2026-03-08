@@ -3,8 +3,9 @@ use std::thread;
 
 static COUNTER: AtomicU64 = AtomicU64::new(0);
 
-/// Небезопасный инкремент через несколько потоков.
-/// Использует global static mut без синхронизации — data race.
+/// Atomically increments a global counter from multiple threads.
+/// Each of the `threads` threads performs `iterations` increments using `SeqCst` ordering.
+/// Returns the final counter value.
 pub fn race_increment(iterations: usize, threads: usize) -> u64 {
     COUNTER.store(0, Ordering::SeqCst);
     let mut handles = Vec::new();
@@ -21,12 +22,12 @@ pub fn race_increment(iterations: usize, threads: usize) -> u64 {
     COUNTER.load(Ordering::SeqCst)
 }
 
-/// Плохая «синхронизация» — просто sleep, возвращает потенциально устаревшее значение.
+/// Returns the current value of the global counter with `SeqCst` ordering.
 pub fn read_after_sleep() -> u64 {
     COUNTER.load(Ordering::SeqCst)
 }
 
-/// Сброс счётчика (также небезопасен, без синхронизации).
+/// Resets the global counter to zero with `SeqCst` ordering.
 pub fn reset_counter() {
     COUNTER.store(0, Ordering::SeqCst);
 }

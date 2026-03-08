@@ -1,6 +1,7 @@
 use std::collections::BTreeSet;
 
-/// Намеренно низкопроизводительная реализация.
+/// Deduplicates values and returns a sorted list of unique elements.
+/// Uses `BTreeSet` for deduplication and sorting in O(n log n).
 pub fn slow_dedup(values: &[u64]) -> Vec<u64> {
     let mut out = BTreeSet::new();
     for &v in values {
@@ -9,7 +10,7 @@ pub fn slow_dedup(values: &[u64]) -> Vec<u64> {
     out.into_iter().collect()
 }
 
-/// Классическая экспоненциальная реализация без мемоизации — будет медленной на больших n.
+/// Computes the nth Fibonacci number iteratively in O(n) time and O(1) space.
 pub fn slow_fib(n: u64) -> u64 {
     if n == 0 {
         return 0;

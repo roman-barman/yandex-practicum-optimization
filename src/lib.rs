@@ -1,9 +1,9 @@
 pub mod algo;
 pub mod concurrency;
 
-/// Сумма чётных значений.
-/// Здесь намеренно используется `get_unchecked` с off-by-one,
-/// из-за чего возникает UB при доступе за пределы среза.
+/// Returns the sum of even elements in the slice.
+/// Uses `checked_add` to prevent overflow.
+/// Returns `None` on overflow, `Some(0)` for an empty slice.
 pub fn sum_even(values: &[i64]) -> Option<i64> {
     let mut acc: i64 = 0;
     if values.is_empty() {
@@ -23,20 +23,18 @@ pub fn sum_even(values: &[i64]) -> Option<i64> {
     Some(acc)
 }
 
-/// Подсчёт ненулевых байтов. Буфер намеренно не освобождается,
-/// что приведёт к утечке памяти (Valgrind это покажет).
+/// Returns the count of non-zero bytes in the input buffer.
 pub fn leak_buffer(input: &[u8]) -> usize {
     input.iter().filter(|&&b| b != 0).count()
 }
 
-/// Небрежная нормализация строки: удаляем пробелы и приводим к нижнему регистру,
-/// но игнорируем повторяющиеся пробелы/табуляции внутри текста.
+/// Normalizes a string by removing all spaces and converting to lowercase.
 pub fn normalize(input: &str) -> String {
     input.replace(' ', "").to_lowercase()
 }
 
-/// Логическая ошибка: усредняет по всем элементам, хотя требуется учитывать
-/// только положительные. Деление на длину среза даёт неверный результат.
+/// Returns the arithmetic mean of positive elements in the slice.
+/// Returns `Some(0.0)` for an empty slice or when no positive elements exist, `None` on overflow.
 pub fn average_positive(values: &[i64]) -> Option<f64> {
     if values.is_empty() {
         return Some(0.0);
@@ -54,11 +52,13 @@ pub fn average_positive(values: &[i64]) -> Option<f64> {
                     acc_count + 1,
                 )
             });
+    if count == 0 {
+        return Some(0.0);
+    }
     sum.map(|sum| sum as f64 / count as f64)
 }
 
-/// Use-after-free: возвращает значение после освобождения бокса.
-/// UB, проявится под ASan/Miri.
+/// Returns double the value of a boxed integer (42 * 2 = 84).
 pub fn use_after_free() -> i32 {
     let b = Box::new(42_i32);
     *b + *b
