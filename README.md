@@ -1,4 +1,4 @@
-# yandex-practicum-optimization
+# Yandex Practicum Optimization
 
 A Rust learning project for the Yandex Practicum course focused on performance profiling, optimization, and memory safety analysis.
 
@@ -61,7 +61,7 @@ cargo bench --bench criterion
 cargo +nightly miri test
 
 # AddressSanitizer
-RUSTFLAGS="-Z sanitizer=address" cargo +nightly test --target x86_64-unknown-linux-gnu
+RUSTFLAGS="-Zsanitizer=address" cargo +nightly test --target x86_64-unknown-linux-gnu
 
 # Valgrind
 valgrind --leak-check=full --show-leak-kinds=all ./target/release/demo
