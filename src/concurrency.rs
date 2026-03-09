@@ -8,7 +8,7 @@ static COUNTER: AtomicU64 = AtomicU64::new(0);
 /// Returns the final counter value.
 pub fn race_increment(iterations: usize, threads: usize) -> u64 {
     COUNTER.store(0, Ordering::SeqCst);
-    let mut handles = Vec::new();
+    let mut handles = Vec::with_capacity(threads);
     for _ in 0..threads {
         handles.push(thread::spawn(move || {
             for _ in 0..iterations {
