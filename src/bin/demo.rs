@@ -1,4 +1,4 @@
-use broken_app::{algo, leak_buffer, normalize, sum_even};
+use broken_app::{algo, concurrency, leak_buffer, normalize, sum_even};
 
 fn main() {
     let nums = [1, 2, 3, 4];
@@ -15,4 +15,7 @@ fn main() {
 
     let uniq = algo::slow_dedup(&[1, 2, 2, 3, 1, 4, 4]);
     println!("dedup: {:?}", uniq);
+
+    let result = concurrency::race_increment(10, 10);
+    println!("race_increment: {}", result);
 }

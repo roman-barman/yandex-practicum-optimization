@@ -77,3 +77,8 @@ fn averages_only_positive() {
 fn use_after_free() {
     assert_eq!(broken_app::use_after_free(), 84);
 }
+
+#[test]
+fn race_increment() {
+    assert_eq!(broken_app::concurrency::race_increment(10, 10), 100);
+}

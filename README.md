@@ -63,6 +63,9 @@ cargo +nightly miri test
 # AddressSanitizer
 RUSTFLAGS="-Zsanitizer=address" cargo +nightly test --target x86_64-unknown-linux-gnu
 
+# ThreadSanitizer
+RUSTFLAGS="-Zsanitizer=thread" cargo +nightly run -Zbuild-std --target x86_64-unknown-linux-gnu
+
 # Valgrind
 valgrind --leak-check=full --show-leak-kinds=all ./target/release/demo
 ```
