@@ -68,6 +68,7 @@ RUSTFLAGS="-Z sanitizer=thread"  RUSTDOCFLAGS="-Zsanitizer=thread" cargo +nightl
 
 # Valgrind
 valgrind --leak-check=full --show-leak-kinds=all ./target/release/demo
+valgrind --leak-check=full --show-leak-kinds=all cargo test
 ```
 
 All checks pass: no undefined behavior, no memory leaks, no data races.
